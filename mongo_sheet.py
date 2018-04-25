@@ -75,7 +75,7 @@ def find_one_from_mongo():
     '''
     data = connect_mongodb.collection.find_one({'Key': 'Value'})
 
-    # find_one with conditions
+    #  find_one with conditions
     data2 = connect_mongodb.collection.find_one({'$and': [
         {'Key1': 'Value1'},
         {'Key2': 'Value2'},
@@ -94,10 +94,6 @@ def find_all_from_mongo():
     for i in data:
         pprint(i)
 
-
-### test
-def test():
-    pass
 
 
 
