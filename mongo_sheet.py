@@ -119,7 +119,7 @@ def update_data():
             'Key1 You want to update': 'New Value',
             'Key2 You want to update': 'New Value',
         }
-    }, upsert=False)  # update one
+    }, upsert=False)
     # Upsert If set to true, creates a new document when no document matches the query criteria.
     # The default value is false, which does not insert a new document when no match is found.
 
@@ -160,9 +160,30 @@ def remove_field():
     # If set to false, updates one document. The default value is false.
 
 
+def delete_collection():
+    '''
+    To remove collection from database.
+    For more information, see
+    https://docs.mongodb.com/manual/reference/method/db.collection.deleteOne/
+    https://docs.mongodb.com/manual/reference/method/db.collection.deleteMany/
+    :return:
+    '''
+    # Specify an empty document {} to delete the first document returned in the collection.
+    connect_mongodb.collection.delete_one({})
 
+    # delete one collection based by its id
+    connect_mongodb.collection.delete_one({'_id': ObjectId("ID VALUES")})
 
+    # delete the first document with certain conditions.
+    # For example, delete the first document which 'key' value is great than 1.
+    connect_mongodb.collection.delete_one({'key': {'$gt': 1}})
 
+    # delete all documents
+    # To delete all documents in a collection, pass in an empty document ({}).
+    connect_mongodb.collection.delete_many({})
+
+    # delete all the documents if conditions match
+    connect_mongodb.collection.delete_many({'key': {'$ls': 100}})
 
 
 
