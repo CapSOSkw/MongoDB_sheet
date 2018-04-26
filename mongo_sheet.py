@@ -26,11 +26,14 @@ class connect_mongodb(object):
                        username=account.username,
                        password=account.password,
                        authSource=account.authSource)
+    # conn = MongonClient(host='127.0.0.1', port=27017)  # for connect with localhost
 
     # 2nd way
     mongo_uri = "mongodb://{0}:{1}@{2}:{3}/{4}".format(account.username, account.password,
                                                      account.host, account.port, account.authSource)
     mongo_uri1 = f'mongodb://{account.username}:{account.password}@{account.host}:{account.port}/{account.authSource}'
+
+    # mongo_uri = 'mongodb://127.0.0.1:27017'  # for connect with localhost
 
     connect = MongoClient(mongo_uri1)   # connect to mongodb
     db = connect.Your_database_name   # connect to database
@@ -186,5 +189,54 @@ def delete_collection():
     connect_mongodb.collection.delete_many({'key': {'$ls': 100}})
 
 
+def get_distinct():
+    '''
+    To get the distinct values from field.
+    Finds the distinct values for a specified field across a single collection
+    or view and returns the results in an array.
+    For more information, see
+    https://docs.mongodb.com/manual/reference/method/db.collection.distinct/
+    :return:
+    '''
+    distinct_values = connect_mongodb.collection.distinct('Field name')
+    pprint(distinct_values)
 
+
+def drop_collection_from_db():
+    '''
+    Removes a collection or view from the database.
+    The method also removes any indexes associated with the dropped collection.
+    For more information, see
+    https://docs.mongodb.com/manual/reference/method/db.collection.drop/
+    :return:
+    '''
+    # Double check before dropping collections
+
+    double_check = False
+    if double_check == True:
+        connect_mongodb.db.COLLECTION_TO_DROP.drop()
+
+
+def get_all_indexes():
+    '''
+    Returns an array that holds a list of documents that identify and
+    describe the existing indexes on the collection.
+    For more information, see
+    https://docs.mongodb.com/manual/reference/method/db.collection.getIndexes/#db.collection.getIndexes
+    :return:
+    '''
+    for idx in connect_mongodb.db.COLLECTION.list_indexes():
+        pprint(idx)
+
+
+def drop_index():
+    '''
+    Drops or removes the specified index from a collection.
+    For more information, see
+    https://docs.mongodb.com/manual/reference/method/db.collection.dropIndex/
+    :return:
+    '''
+    double_check = False
+    if double_check == True:
+        connect_mongodb.db.COLLECTION.drop_indexes('index name')
 
