@@ -187,7 +187,6 @@ def delete_collection():
 
     # delete all the documents if conditions match
     connect_mongodb.collection.delete_many({'key': {'$ls': 100}})
-
     connect_mongodb.collection.remove({'key': 'value'}, multi=True)  # multi default is True
 
 
