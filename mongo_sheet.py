@@ -188,6 +188,8 @@ def delete_collection():
     # delete all the documents if conditions match
     connect_mongodb.collection.delete_many({'key': {'$ls': 100}})
 
+    connect_mongodb.collection.remove({'key': 'value'}, multi=True)  # multi default is True
+
 
 def get_distinct():
     '''
@@ -239,4 +241,15 @@ def drop_index():
     double_check = False
     if double_check == True:
         connect_mongodb.db.COLLECTION.drop_indexes('index name')
+
+
+def rename_collection():
+    '''
+    Renames a collection.
+    https://docs.mongodb.com/manual/reference/method/db.collection.renameCollection/
+    :return:
+    '''
+    double_check = False
+    if double_check == True:
+        connect_mongodb.db.OLD_COLLECTION.rename("NEW COLLECTION NAME")
 
