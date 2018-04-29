@@ -2,9 +2,9 @@ from pymongo import MongoClient
 from pprint import pprint
 from bson.objectid import ObjectId
 import json
-from glob import iglob   # used for loading json files
+from glob import iglob   # for loading json files
 import os
-import urllib.parse   # used for deal with some special characters, such as "@"
+import urllib.parse   # for dealing with some special characters, such as "@"
 
 
 class account(object):
@@ -31,9 +31,10 @@ class connect_mongodb(object):
     # 2nd way
     mongo_uri = "mongodb://{0}:{1}@{2}:{3}/{4}".format(account.username, account.password,
                                                      account.host, account.port, account.authSource)
+    # Or only for Python3.6+
     mongo_uri1 = f'mongodb://{account.username}:{account.password}@{account.host}:{account.port}/{account.authSource}'
 
-    # mongo_uri = 'mongodb://127.0.0.1:27017'  # for connect with localhost
+    # mongo_uri = 'mongodb://127.0.0.1:27017'  # for connecting with localhost
 
     connect = MongoClient(mongo_uri1)   # connect to mongodb
     db = connect.Your_database_name   # connect to database
@@ -67,7 +68,7 @@ def insert_many_json():
     for filename in iglob('./Folder/*.json'):
         with open(filename) as f:
             json_data = json.load(f)
-            # json_data['_id'] = ObjectId()     # You can create ID, otherwise MongoDB will help you create
+            # json_data['_id'] = ObjectId()     # You can create ID, otherwise MongoDB will help you create one
             # pprint(json_data)
             connect_mongodb.collection.insert(json_data)
 
