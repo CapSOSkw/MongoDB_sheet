@@ -252,3 +252,50 @@ def rename_collection():
     if double_check == True:
         connect_mongodb.db.OLD_COLLECTION.rename("NEW COLLECTION NAME")
 
+
+def if_in_polygon():
+    '''
+    To check one point if it is in a polygon using mongoDB built-in function, $geoIntersects.
+    Before using built-in function, should have correct format data and correct index(2dspere)
+    For more information, see
+    https://docs.mongodb.com/manual/reference/operator/query/geoIntersects/
+    https://docs.mongodb.com/manual/core/2dsphere/
+    https://stackoverflow.com/questions/24578363/mongodb-check-if-point-is-in-polygon
+
+    For example, a document in the collection is like:
+    {"boundary": {
+        "type": "Polygon",
+        "coordinates":
+                    [
+                        [
+                        [17.60083012593064, 78.18557739257812],
+                            [ 17.16834652544664, 78.19381713867188],
+                            [ 17.17490690610013, 78.739013671875],
+                            [ 17.613919673106714, 78.73489379882812],
+                            [ 17.60083012593064, 78.18557739257812]
+                          ]
+                            ]
+        }
+    }
+
+    :return:
+    '''
+    connect_mongodb.collection.create_index([('boundary', '2dsphere')]) # create 2dsphere index for boundary field
+    result = connect_mongodb.collection.find(
+        {
+            'boundary': {
+                '$geoIntersects': {
+                    '$geometry': {
+                        'type': 'Point',
+                        'coordinates': [-73.96777, 40.671263]   # Enter the point you want to check
+                    }
+                }
+
+            }
+        }
+    )
+
+    for i in result:
+        pprint(i)   # Should return all related polygon document
+
+
