@@ -258,6 +258,9 @@ def if_in_polygon():
     '''
     To check one point if it is in a polygon using mongoDB built-in function, $geoIntersects.
     Before using built-in function, should have correct format data and correct index(2dspere)
+    Otherwise, Python package, Shapely, can also do this, see
+    https://automating-gis-processes.github.io/2016/Lesson3-point-in-polygon.html
+
     For more information, see
     https://docs.mongodb.com/manual/reference/operator/query/geoIntersects/
     https://docs.mongodb.com/manual/core/2dsphere/
@@ -269,7 +272,7 @@ def if_in_polygon():
         "coordinates":
                     [
                         [
-                        [17.60083012593064, 78.18557739257812],
+                            [ 17.60083012593064, 78.18557739257812],
                             [ 17.16834652544664, 78.19381713867188],
                             [ 17.17490690610013, 78.739013671875],
                             [ 17.613919673106714, 78.73489379882812],
@@ -281,7 +284,7 @@ def if_in_polygon():
 
     :return:
     '''
-    connect_mongodb.collection.create_index([('boundary', '2dsphere')]) # create 2dsphere index for boundary field
+    connect_mongodb.collection.create_index([('boundary', '2dsphere')])  # create 2dsphere index for boundary field
     result = connect_mongodb.collection.find(
         {
             'boundary': {
@@ -297,6 +300,6 @@ def if_in_polygon():
     )
 
     for i in result:
-        pprint(i)   # Should return all related polygon document
+        pprint(i)   # Should return all related polygon documents
 
 
