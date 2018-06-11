@@ -317,6 +317,56 @@ def rename_collection():
         connect_mongodb.db.OLD_COLLECTION.rename("NEW COLLECTION NAME")
 
 
+def mongo_aggregate():
+    '''
+    https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline/
+    http://api.mongodb.com/python/current/examples/aggregation.html
+    https://docs.mongodb.com/manual/reference/method/db.collection.aggregate/
+
+    https://docs.mongodb.com/manual/reference/operator/aggregation/group/
+    Group-Accumulator Operator:
+    Name	Description
+    $avg	Returns an average of numerical values. Ignores non-numeric values.
+    $first	Returns a value from the first document for each group. Order is only defined if the documents are in a defined order.
+    $last	Returns a value from the last document for each group. Order is only defined if the documents are in a defined order.
+    $max	Returns the highest expression value for each group.
+    $min	Returns the lowest expression value for each group.
+    $push	Returns an array of expression values for each group.
+    $addToSet	Returns an array of unique expression values for each group. Order of the array elements is undefined.
+    $stdDevPop	Returns the population standard deviation of the input values.
+    $stdDevSamp	Returns the sample standard deviation of the input values.
+    $sum	Returns a sum of numerical values. Ignores non-numeric values.
+
+    https://docs.mongodb.com/manual/reference/command/
+
+    :return:
+    '''
+    aggregate = connect_mongodb.db.COLLECTION.aggregate(
+        [
+         {'$match': {'KEY': "VALUE"}},
+         {
+             '$group': {'_id': {"NEW KEY NAME1": "$OLD KEY NAME1", "NEW KEY NAME2": "$OLD KEY NAME2"},
+                        'NAME FOR PURPOSE OF GROUPING': {"$sum": '$KEY NAME'}}
+          }
+         ]
+    )
+    pprint(list(aggregate))
+
+    # If want to explain query for aggregate, alternative to db.command
+    # https://docs.mongodb.com/manual/reference/command/
+
+    pipeline = [
+                 {'$match': {'KEY': "VALUE"}},
+                 {
+                     '$group': {'_id': {"NEW KEY NAME1": "$OLD KEY NAME1", "NEW KEY NAME2": "$OLD KEY NAME2"},
+                                'NAME FOR PURPOSE OF GROUPING': {"$sum": '$KEY NAME'}}
+                  }
+                ]
+
+    explaination = connect_mongodb.db.command('aggregate', connect_mongodb.db.COLLECTION, pipeline=pipeline, explain=True)
+    pprint(explaination)
+
+
 def if_in_polygon():
     '''
     To check one point if it is in a polygon using mongoDB built-in function, $geoIntersects.
