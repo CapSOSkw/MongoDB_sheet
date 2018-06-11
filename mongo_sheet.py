@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import pymongo
 from pprint import pprint
 from bson.objectid import ObjectId
 import json
@@ -240,7 +241,69 @@ def drop_index():
     '''
     double_check = False
     if double_check == True:
-        connect_mongodb.db.COLLECTION.drop_indexes('index name')
+        connect_mongodb.db.COLLECTION.drop_index('index name')
+
+
+def drop_allIndexes():
+    '''
+    Drops all indexes.
+    For more information, see
+    https://docs.mongodb.com/manual/reference/method/db.collection.dropIndexes/
+    :return:
+    '''
+    double_check = False
+    if double_check:
+        connect_mongodb.db.COLLECTION.drop_indexes()
+
+
+def createIndex():
+    '''
+    Creates an index on this collection.
+    Takes either a single key or a list of (key, direction) pairs.
+    The key(s) must be an instance of basestring (str in python 3),
+    and the direction(s) must be one of (ASCENDING, DESCENDING, GEO2D, GEOHAYSTACK, GEOSPHERE, HASHED, TEXT).
+    :return:
+    '''
+
+    # To create a single key ascending index
+    connect_mongodb.db.COLLECTION.create_index('THE INDEX NAME YOU CREATE')
+
+    # Descending or others
+    connect_mongodb.db.COLLECTION.create_index([('THE NAME 1', pymongo.DESCENDING),
+                                                ('THE NAME 2', pymongo.ASCENDING),
+                                                ('THE NAME 3', pymongo.GEOSPHERE)])
+
+    '''
+    Valid options include, but are not limited to:
+    
+    name: custom name to use for this index - if none is given, a name will be generated.
+    unique: if True creates a uniqueness constraint on the index.
+    background: if True this index should be created in the background.
+    sparse: if True, omit from the index any documents that lack the indexed field.
+    bucketSize: for use with geoHaystack indexes. Number of documents to group together within a certain proximity to a given longitude and latitude.
+    min: minimum value for keys in a GEO2D index.
+    max: maximum value for keys in a GEO2D index.
+    expireAfterSeconds: <int> Used to create an expiring (TTL) collection. MongoDB will automatically delete documents from this collection after <int> seconds. The indexed field must be a UTC datetime or the data will not expire.
+    partialFilterExpression: A document that specifies a filter for a partial index.
+    collation (optional): An instance of Collation. This option is only supported on MongoDB 3.4 and above.
+    '''
+
+
+def explain_query():
+    '''
+    Returns information on the query plan for the following operations:
+    aggregate(); count(); distinct(); find(); group(); remove(); and update() methods.
+
+    From Mongo Manual, there are three modes: "queryPlanner", "executionStats", and "allPlansExecution".
+    However, Pymongo only has "allPlansExecution". This mode includes "queryPlanner" and "executionStats".
+
+    For more information, see
+    https://docs.mongodb.com/manual/reference/method/db.collection.explain/
+    https://docs.mongodb.com/manual/reference/explain-results/index.html
+
+    :return:
+    '''
+    connect_mongodb.db.COLLECTION.find().explain()
 
 
 def rename_collection():
