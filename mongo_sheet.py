@@ -370,7 +370,8 @@ def mongo_aggregate():
 def if_in_polygon():
     '''
     To check one point if it is in a polygon using mongoDB built-in function, $geoIntersects.
-    Before using built-in function, should have correct format data and correct index(2dspere)
+    Before using built-in function, should have correct format data and index(2dsphere).
+    Index: 2dsphere will improve performance.
     Otherwise, Python package, Shapely, can also do this, see
     https://automating-gis-processes.github.io/2016/Lesson3-point-in-polygon.html
 
