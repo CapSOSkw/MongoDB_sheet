@@ -417,3 +417,24 @@ def if_in_polygon():
         pprint(i)   # Should return all related polygon documents
 
 
+    # Advanced method
+
+    result2 = connect_mongodb.collection.find(
+        {
+            'boundary': {
+                '$geoIntersects': {
+                    '$geometry': {
+                        'type': 'Point',
+                        'coordinates': [-73.96777, 40.671263]   # Enter the point you want to check
+                    }
+                }
+            },
+
+            'Key Name': 'Conditions'
+        },
+        {'Key Name1', 'Key Name2', "only return these keys"}
+    )
+
+
+
+
