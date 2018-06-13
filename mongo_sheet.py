@@ -432,7 +432,7 @@ def if_in_polygon():
 
             'Key Name': 'Conditions'
         },
-        {'Key Name1', 'Key Name2', "Would only return these keys"}
+        {'Key Name1', 'Key Name2', "only return these keys"}
     )
 
 
